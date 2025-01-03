@@ -21,24 +21,43 @@
 
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 function App() {
     const customerName = useSelector((state) => state.customer.customerName);
     const itemName = useSelector((state) => state.item.itemName);
     const dispatch = useDispatch();
 
+    const [customerInput, setCustomerInput] = useState('');
+    const [itemInput, setItemInput] = useState('');
+
+    const handleAddCustomer = () => {
+        dispatch({ type: 'SET_CUSTOMER', payload: customerInput });
+        setCustomerInput('');
+    };
+
+    const handleAddItem = () => {
+        dispatch({ type: 'SET_ITEM', payload: itemInput });
+        setItemInput('');
+    };
+
     return (
         <>
-            <h1>Customer: {customerName} | Item: {itemName}</h1>
-
             <label htmlFor="customerName" className="block text-gray-700">Customer Name</label>
             <input
                 name="customerName"
                 type="text"
                 placeholder="Enter Customer Name"
                 className="w-full border border-gray-300 rounded p-2"
-                onChange={(e) => dispatch({ type: 'SET_CUSTOMER', payload: e.target.value })}
+                value={customerInput}
+                onChange={(e) => setCustomerInput(e.target.value)}
             />
+            <button
+                onClick={handleAddCustomer}
+                className="bg-blue-500 text-white p-2 rounded mt-2"
+            >
+                Add Customer
+            </button>
             <br />
 
             <label htmlFor="itemName" className="block text-gray-700">Item Name</label>
@@ -47,8 +66,18 @@ function App() {
                 type="text"
                 placeholder="Enter Item Name"
                 className="w-full border border-gray-300 rounded p-2"
-                onChange={(e) => dispatch({ type: 'SET_ITEM', payload: e.target.value })}
+                value={itemInput}
+                onChange={(e) => setItemInput(e.target.value)}
             />
+            <button
+                onClick={handleAddItem}
+                className="bg-green-500 text-white p-2 rounded mt-2"
+            >
+                Add Item
+            </button>
+            <br />
+
+            <h4 className="mt-4">Customer: {customerName} | Item: {itemName}</h4>
         </>
     );
 }
